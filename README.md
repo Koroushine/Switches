@@ -61,11 +61,7 @@ A curated collection of PHP programs including:
 
 ## 🛠️ Installation & Usage
 
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/yourusername/switch_web.git
-    ```
-2.  **Run Locally**:
+   **Run Locally**:
     * For the **HTML/CSS** sections: Open `index.html` in any modern web browser.
     * For the **PHP Lab**: Move the project folder to your local server directory (e.g., `htdocs` for XAMPP or `www` for WAMP) and access it via `localhost`.
 
