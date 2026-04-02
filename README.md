@@ -15,24 +15,27 @@ The project is designed with a "Digital Gallery" aesthetic, focusing on minimali
 ## File Structure
 
 ```text
-D:.
-│   index.html              # Landing page & project hub
+koroushine.github.io
+│   index.html              # Core Landing Page (Entry Point)
+│   README.md               # Project Documentation
 │
 ├───assets
-│   ├───css                 # Global and page-specific styles
-│   ├───images              # Product photography and diagrams
-│   │       linear_switch.jpeg
-│   │       lubricant.jpg
-│   │       lubricant.webp
-│   │       tactile_switch.jpeg
-│   │
-│   └───js                  # Interactive components and animations
+│   └───images              # Optimized Visual Assets
+│           IQUNIXCoralSea.jpg
+│           keycon.jpg
+│           kreo.webp
+│           linear_switch.jpeg
+│           lubricant.jpg
+│           tactile_switch.jpeg
+│           ...
 │
-└───pages                   # Content-specific sub-pages
-        clicky.html         # Clicky switches guide
-        linear.html         # Linear switches guide
-        php.html            # PHP Lab programs & solutions
-        tactile.html        # Tactile switches guide
+└───pages                   # Content Modules
+        clicky.html         # Clicky Switches Guide
+        contact.html        # User Inquiry & Feedback
+        example.html        # Components Showcase
+        linear.html         # Linear Switches Guide
+        php.html            # PHP Lab: Logic & Algorithms
+        tactile.html        # Tactile Switches Guide
 ```
 
 ---
