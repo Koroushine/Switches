@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Linear Switches — SwitchLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    /* ---------- GLOBAL RESET & DESIGN SYSTEM (standalone) ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4c616c;
+      --on-primary: #ffffff;
+      --primary-container: #cfe6f2;
+      --on-primary-container: #1e2f38;
+      --surface: #f8f9fa;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f1f3f5;
+      --surface-container: #e9ecef;
+      --surface-container-high: #dee2e6;
+      --on-surface: #1e2f38;
+      --on-surface-variant: #5c6f7a;
+      --outline-variant: #cbd5e1;
+      --background: #ffffff;
+      --on-background: #1e2f38;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--on-background);
+      line-height: 1.5;
+    }
+
+    /* Glass navigation */
+    .glass-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(171, 179, 183, 0.2);
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .nav-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .nav-links a.active, .nav-links a:hover {
+      color: var(--primary);
+    }
+    .btn-contact {
+      background: transparent;
+      border: 1px solid var(--outline-variant);
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--on-surface);
+      transition: all 0.2s;
+    }
+    .btn-contact:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    .btn-primary, .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #3a5b66;
+      transform: translateY(-2px);
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface-variant);
+    }
+    .btn-ghost:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* main layout (no sidebar) */
+    .app-shell {
+      display: block;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .main-canvas {
+      width: 100%;
+      padding: 2rem 0 4rem 0;
+    }
+
+    /* footer */
+    footer {
+      border-top: 1px solid rgba(171, 179, 183, 0.2);
+      background: var(--surface-container-low);
+      margin-top: 3rem;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-decoration: none;
+      color: var(--primary);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .footer-links a {
+      text-decoration: none;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+
+    @media (max-width: 800px) {
+      .nav-inner { flex-direction: column; align-items: flex-start; }
+      .nav-links { flex-wrap: wrap; gap: 1rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .app-shell { padding: 0 1.25rem; }
+    }
+  </style>
+  <style>
+    /* linear.html specific styles */
+    .text-gradient {
+      background: linear-gradient(135deg, #4c616c 0%, #cfe6f2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 6rem;
+    }
+    .hero-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--on-background);
+      margin-bottom: 1.5rem;
+    }
+    .hero-body {
+      font-size: 1.05rem;
+      color: var(--on-surface-variant);
+      line-height: 1.7;
+      max-width: 42ch;
+      margin-bottom: 2rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .hero-img-wrap {
+      position: relative;
+    }
+    .hero-img-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--primary-container);
+      border-radius: 2rem;
+      transform: rotate(-3deg);
+      transition: transform 0.5s;
+    }
+    .hero-img-wrap:hover .hero-img-bg { transform: rotate(0deg); }
+    .hero-img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 2rem;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.12);
+      transition: transform 0.5s;
+    }
+    .hero-img-wrap:hover .hero-img { transform: translateY(-8px); }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .section-heading h2 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(171,179,183,0.2);
+    }
+
+    .anatomy-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: var(--surface-container-low);
+      padding: 3rem;
+      border-radius: 2.5rem;
+      margin-bottom: 6rem;
+    }
+    .anatomy-h { font-family: 'Manrope', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--on-background); margin-bottom: 1rem; letter-spacing: -0.04em; }
+    .anatomy-p { color: var(--on-surface-variant); line-height: 1.7; margin-bottom: 1.5rem; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .feature-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .feature-icon {
+      background: white;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .feature-label { font-weight: 700; color: var(--on-surface); display: block; margin-bottom: 0.2rem; }
+    .feature-desc { font-size: 0.85rem; color: var(--on-surface-variant); }
+
+    /* replaced diagram with image */
+    .image-box {
+      background: white;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid rgba(171,179,183,0.1);
+      box-shadow: 0 1px 4px rgba(76,97,108,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .image-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(76,97,108,0.12);
+    }
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .image-caption {
+      padding: 1rem;
+      font-size: 0.75rem;
+      text-align: center;
+      color: var(--on-surface-variant);
+      background: var(--surface-container-lowest);
+      border-top: 1px solid rgba(171,179,183,0.08);
+    }
+
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .bento-card {
+      border-radius: 2rem;
+      padding: 2.5rem;
+      transition: transform 0.3s;
+    }
+    .bento-card:hover { transform: translateY(-3px); }
+    .bento-lg {
+      grid-column: span 2;
+      background: var(--surface-container-lowest);
+      border: 1px solid rgba(171,179,183,0.12);
+      box-shadow: 0 1px 8px rgba(76,97,108,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .bento-h { font-family: 'Manrope', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--on-background); letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+    .bento-p { color: var(--on-surface-variant); font-size: 0.95rem; line-height: 1.6; }
+    .tag-row { display: flex; gap: 0.5rem; margin-top: 2rem; flex-wrap: wrap; }
+    .tag {
+      padding: 0.3rem 0.75rem;
+      background: var(--surface-container-high);
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .bento-accent {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .bento-stat {
+      background: var(--surface-container-high);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .bento-img-card {
+      grid-column: span 2;
+      background: white;
+      border-radius: 2rem;
+      overflow: hidden;
+      border: 1px solid rgba(171,179,183,0.12);
+      display: flex;
+      flex-direction: column;
+    }
+    .bento-img-wrap { overflow: hidden; height: 22rem; position: relative; }
+    .bento-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s; }
+    .bento-img-card:hover .bento-img { transform: scale(1.05); }
+    .bento-img-body { padding: 1.5rem 2rem; }
+    .review-card {
+      grid-column: span 1;
+      background: var(--surface-container-high);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .review-stars { display: flex; align-items: center; gap: 0.25rem; color: var(--primary); }
+    .review-text { font-style: italic; color: var(--on-surface-variant); font-size: 0.9rem; line-height: 1.6; margin: 0.75rem 0; }
+    .review-author { font-size: 0.8rem; font-weight: 700; color: var(--on-surface); padding-top: 1rem; border-top: 1px solid rgba(171,179,183,0.15); }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .anatomy-block { grid-template-columns: 1fr; }
+      .bento { grid-template-columns: 1fr; }
+      .bento-lg, .bento-img-card { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="glass-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">KorouShine</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="linear.html" class="active">Linear Switches</a></li>
+      <li><a href="tactile.html">Tactile Switches</a></li>
+      <li><a href="clicky.html">Clicky Switches</a></li>
+      <li><a href="php.html">PHP Lab</a></li>
+      <li><a href="example.html" class="active">Keyboards</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <li></li><a href="../pages/contact.html" class="btn-contact">Contact</a></li>
+    </div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <div class="main-canvas">
+    <!-- Hero -->
+    <section class="hero-grid">
+      <div>
+        <h1 class="hero-title">
+          Linear<span class="text-gradient"> Switches</span>
+        </h1>
+        <p class="hero-body">
+          Linear switches are defined by their smooth, consistent travel from top to bottom. No tactile bump, no audible click—just a pure vertical motion optimized for speed and precision.
+        </p>
+        <div class="hero-actions">
+          <a href="#anatomy" class="btn-primary">
+            Explore Collection
+            <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-img-wrap">
+        <div class="hero-img-bg"></div>
+        <img class="hero-img" src="https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&q=80" alt="Linear mechanical keyboard switch"/>
+      </div>
+    </section>
+
+    <!-- Anatomy section (How it works) - replaced diagram with image -->
+    <section id="anatomy">
+      <div class="section-heading">
+        <div class="divider-line"></div>
+        <h2>The Anatomy of Smoothness</h2>
+        <div class="divider-line" style="width:3rem;flex:0 0 3rem"></div>
+      </div>
+      <div class="anatomy-block">
+        <div>
+          <h3 class="anatomy-h">How It Works</h3>
+          <p class="anatomy-p">Unlike tactile or clicky switches, a linear switch has a straight stem. When you press down, the stem slides past the leaf contact without any interruption, creating a seamless feel.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="material-symbols-outlined feature-icon">stat_0</span>
+              <div>
+                <span class="feature-label">Zero Feedback</span>
+                <span class="feature-desc">Smooth travel from start to bottom-out.</span>
+              </div>
+            </li>
+            <li class="feature-item">
+              <span class="material-symbols-outlined feature-icon">speed</span>
+              <div>
+                <span class="feature-label">Gaming Optimized</span>
+                <span class="feature-desc">Rapid double-tap capability without obstruction.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Replaced diagram with image -->
+        <div class="image-box">
+          <img src="../assets/images/linear_switch.jpeg"/>
+          <div class="image-caption">Linear switch internals — straight stem, consistent travel path</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento section (specs & reviews) -->
+    <section id="specs">
+      <div class="bento">
+        <div class="bento-card bento-lg">
+          <div>
+            <h4 class="bento-h">Consistency is King</h4>
+            <p class="bento-p">Every linear switch in our lab is tested for spring weight variance. We ensure that your 'Q' key feels exactly the same as your 'P' key.</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag">62g Gold Spring</span>
+            <span class="tag">Factory Lubed</span>
+          </div>
+        </div>
+        <div class="bento-card bento-accent">
+          <span class="material-symbols-outlined" style="font-size:2.5rem">volume_off</span>
+          <div>
+            <h4 style="font-family:Manrope;font-weight:700;font-size:1.15rem;margin-bottom:0.5rem">Silent Profile</h4>
+            <p style="font-size:0.82rem;opacity:0.8;line-height:1.5">Perfect for shared workspaces and late-night gaming sessions.</p>
+          </div>
+        </div>
+        <div class="bento-card bento-img-card">
+          <div class="bento-img-wrap">
+            <img class="bento-img" src="../assets/images/lubricant.jpg"/>
+          </div>
+          <div class="bento-img-body">
+            <h4 style="font-family:Manrope;font-weight:700;font-size:1.1rem;margin-bottom:0.5rem">The Art of Lubing</h4>
+            <p style="font-size:0.85rem;color:var(--on-surface-variant);line-height:1.6">Linear switches benefit the most from high-quality lubrication. We recommend Krytox 205g0 for that signature 'thocky' sound and buttery feel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

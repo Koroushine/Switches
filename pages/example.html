@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keyboard Examples — KorouShine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4c616c;
+      --on-primary: #ffffff;
+      --primary-container: #cfe6f2;
+      --on-primary-container: #1e2f38;
+      --surface: #f8f9fa;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f1f3f5;
+      --surface-container: #e9ecef;
+      --surface-container-high: #dee2e6;
+      --on-surface: #1e2f38;
+      --on-surface-variant: #5c6f7a;
+      --outline-variant: #cbd5e1;
+      --background: #ffffff;
+      --on-background: #1e2f38;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--on-background);
+      line-height: 1.5;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(171, 179, 183, 0.2);
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .nav-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .nav-links a.active, .nav-links a:hover {
+      color: var(--primary);
+    }
+    .btn-contact {
+      background: var(--primary);
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: white;
+      transition: all 0.2s;
+    }
+    .btn-contact:hover {
+      background: #3a5b66;
+      transform: translateY(-2px);
+    }
+
+    .app-shell {
+      display: block;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .main-canvas {
+      width: 100%;
+      padding: 2rem 0 4rem 0;
+    }
+
+    footer {
+      border-top: 1px solid rgba(171, 179, 183, 0.2);
+      background: var(--surface-container-low);
+      margin-top: 3rem;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-decoration: none;
+      color: var(--primary);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .footer-links a {
+      text-decoration: none;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+
+    @media (max-width: 800px) {
+      .nav-inner { flex-direction: column; align-items: flex-start; }
+      .nav-links { flex-wrap: wrap; gap: 1rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .app-shell { padding: 0 1.25rem; }
+    }
+  </style>
+  <style>
+    /* Example page specific styles */
+    .page-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--on-surface);
+      margin-bottom: 0.5rem;
+    }
+    .page-desc {
+      font-size: 1rem;
+      color: var(--on-surface-variant);
+      line-height: 1.6;
+      max-width: 48ch;
+      margin-bottom: 3rem;
+    }
+
+    /* Keyboard Grid */
+    .keyboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .keyboard-card {
+      background: var(--surface-container-lowest);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid rgba(171, 179, 183, 0.12);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .keyboard-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 32px rgba(76, 97, 108, 0.12);
+    }
+
+    .card-image {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      background: var(--surface-container-high);
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .keyboard-card:hover .card-image img {
+      transform: scale(1.05);
+    }
+
+    .switch-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: white;
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .switch-badge.linear { background: rgba(76, 97, 108, 0.9); }
+    .switch-badge.tactile { background: rgba(207, 230, 242, 0.9); color: #1e2f38; }
+    .switch-badge.clicky { background: rgba(76, 97, 108, 0.9); }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+    .keyboard-name {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      margin-bottom: 0.5rem;
+    }
+    .keyboard-desc {
+      font-size: 0.85rem;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    .keyboard-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .spec-tag {
+      background: var(--surface-container-low);
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+    .amazon-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #FF9900;
+      color: #1e2f38;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+      width: 100%;
+      justify-content: center;
+    }
+    .amazon-btn:hover {
+      background: #e68a00;
+      transform: translateY(-2px);
+    }
+    .amazon-btn span {
+      font-size: 1rem;
+    }
+
+    @media (max-width: 1000px) {
+      .keyboard-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    }
+    @media (max-width: 650px) {
+      .keyboard-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="glass-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">KorouShine</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="linear.html">Linear Switches</a></li>
+      <li><a href="tactile.html">Tactile Switches</a></li>
+      <li><a href="clicky.html">Clicky Switches</a></li>
+      <li><a href="php.html">PHP Lab</a></li>
+      <li><a href="example.html" class="active">Keyboards</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <a href="contact.html" class="btn-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <div class="main-canvas">
+    <h1 class="page-title">Recommended Keyboards</h1>
+    <p class="page-desc">Explore our top picks for each switch type. Click on any keyboard to view and purchase on Amazon.</p>
+
+    <div class="keyboard-grid">
+
+      <!-- Linear Keyboard - Keychron K2 -->
+      <div class="keyboard-card">
+        <div class="card-image">
+          <img src="../assets/images/keycon.jpg"/>
+          <div class="switch-badge linear">⚡ LINEAR</div>
+        </div>
+        <div class="card-content">
+          <h3 class="keyboard-name">Keychron K2</h3>
+          <p class="keyboard-desc">Wireless mechanical keyboard with Gateron Red linear switches. Smooth keystrokes perfect for gaming and fast typing.</p>
+          <div class="keyboard-specs">
+            <span class="spec-tag">Gateron Red</span>
+            <span class="spec-tag">Hot-swappable</span>
+            <span class="spec-tag">RGB Backlit</span>
+            <span class="spec-tag">Bluetooth 5.1</span>
+          </div>
+          <a href="https://www.amazon.com/Keychron-K2-Wireless-Mechanical-Keyboard/dp/B07YHS2P9L" target="_blank" rel="noopener noreferrer" class="amazon-btn">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            Buy on Amazon
+          </a>
+        </div>
+      </div>
+
+      <!-- Tactile Keyboard - Logitech MX Mechanical -->
+      <div class="keyboard-card">
+        <div class="card-image">
+          <img src="../assets/images/kreo.webp" alt="Kreo Swamp Tactile Keyboard"/>
+          <div class="switch-badge tactile">👆 TACTILE</div>
+        </div>
+        <div class="card-content">
+          <h3 class="keyboard-name">Kreo Swarm</h3>
+          <p class="keyboard-desc">The best typing experience you could've asked for. Satisfying bump feedback for productive typing sessions.</p>
+          <div class="keyboard-specs">
+            <span class="spec-tag">The Thockiest Thoccs</span>
+            <span class="spec-tag">Smart Illumination</span>
+            <span class="spec-tag">Multi-device</span>
+            <span class="spec-tag">USB-C</span>
+            <span class="spec-tag">Metal Volume Knob</span>
+            <span class="spec-tag">Hot Swappable Mechanical Switches</span>
+            
+          </div>
+          <a href="https://www.amazon.in/Kreo-Wireless-Mechanical-Pre-lubed-Absorption/dp/B0D83LDF9N/ref=sr_1_3?nsdOptOutParam=true&sr=8-3" target="_blank" rel="noopener noreferrer" class="amazon-btn">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            Buy on Amazon
+          </a>
+        </div>
+      </div>
+
+      <!-- Clicky Keyboard - Razer BlackWidow -->
+      <div class="keyboard-card">
+        <div class="card-image">
+          <img src="../assets/images/IQUNIXCoralSea.jpg" alt="Razer BlackWidow Clicky Keyboard"/>
+          <div class="switch-badge clicky">🔊 CLICKY</div>
+        </div>
+        <div class="card-content">
+          <h3 class="keyboard-name">IQUnix F96</h3>
+          <p class="keyboard-desc">Built from precision CNC-machined aluminum and true forged carbon fibre, this keyboard blends elite performance with refined aesthetics.</p>
+          <div class="keyboard-specs">
+            <span class="spec-tag">Razer Green</span>
+            <span class="spec-tag">Chroma RGB</span>
+            <span class="spec-tag">Magnetic Wrist Rest</span>
+            <span class="spec-tag">Dedicated Media Keys</span>
+          </div>
+          <a href="https://iqunix.com/products/iqunix-ev63-hall-effect-keyboard" target="_blank" rel="noopener noreferrer" class="amazon-btn">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            Buy on Amazon
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

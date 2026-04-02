@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KorouShine — VAC : Web Development Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #4c616c;
+      --primary-dim: #40555f;
+      --primary-container: #cfe6f2;
+      --on-primary: #f0f9ff;
+      --on-primary-container: #40555f;
+      --surface: #f8f9fa;
+      --surface-container: #eaeff1;
+      --surface-container-low: #f1f4f6;
+      --surface-container-high: #e3e9ec;
+      --surface-container-highest: #dbe4e7;
+      --surface-container-lowest: #ffffff;
+      --on-surface: #2b3437;
+      --on-surface-variant: #586064;
+      --outline-variant: #abb3b7;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--on-surface);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; width: 100%; z-index: 50;
+      background: rgba(248,249,250,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(171,179,183,0.15);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .nav-logo {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a.active { color: var(--primary); font-weight: 700; border-bottom: 2px solid var(--primary); padding-bottom: 2px; }
+
+    .btn-contact {
+      background: var(--primary);
+      color: var(--on-primary);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.55rem 1.4rem;
+      border-radius: 0.375rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-contact:hover { opacity: 0.85; }
+
+    /* Hero landing */
+    .landing-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(207,230,242,0.4) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .landing-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .landing-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--on-surface);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .landing-title .accent {
+      background: linear-gradient(135deg, #4c616c 0%, #8ab0c4 50%, #cfe6f2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .landing-subtitle {
+      font-size: 1.15rem;
+      color: var(--on-surface-variant);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    .landing-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.8s;
+    }
+
+    .btn-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.9rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-lg:hover { transform: translateY(-2px); }
+
+    .btn-filled {
+      background: linear-gradient(135deg, #4c616c, #cfe6f2);
+      color: var(--on-primary);
+      box-shadow: 0 8px 32px rgba(76,97,108,0.18);
+    }
+
+    .btn-outlined {
+      background: var(--surface-container-lowest);
+      color: var(--primary);
+      box-shadow: 0 2px 12px rgba(76,97,108,0.08);
+    }
+
+    /* Project card grid */
+    .projects-section {
+      padding: 2rem 3rem 8rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(171,179,183,0.3);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* Featured / big PHP card */
+    .card {
+      border-radius: 1.5rem;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s;
+      display: block;
+    }
+
+    .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(76,97,108,0.1); }
+
+    .card-php {
+      grid-column: span 8;
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 3rem;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-php::after {
+      content: '';
+      position: absolute;
+      right: -4rem;
+      bottom: -4rem;
+      width: 20rem;
+      height: 20rem;
+      background: rgba(207,230,242,0.12);
+      border-radius: 50%;
+    }
+
+    .card-php::before {
+      content: '';
+      position: absolute;
+      right: 4rem;
+      top: -3rem;
+      width: 12rem;
+      height: 12rem;
+      background: rgba(207,230,242,0.07);
+      border-radius: 50%;
+    }
+
+    .card-php-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      font-weight: 500;
+    }
+
+    .card-php-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-php-meta {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-php-desc {
+      font-size: 1rem;
+      opacity: 0.75;
+      line-height: 1.6;
+      max-width: 38ch;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-php-arrow {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Small cards */
+    .card-sm {
+      grid-column: span 4;
+      padding: 2rem;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-linear { background: var(--surface-container-lowest); border: 1px solid rgba(171,179,183,0.15); }
+    .card-tactile { background: var(--surface-container-low); }
+    .card-clicky { background: var(--primary-container); }
+
+    .card-sm-icon {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-sm-title {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    .card-sm-desc {
+      font-size: 0.82rem;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+      margin-top: 0.4rem;
+    }
+
+    .card-sm-link {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 1rem;
+    }
+
+    /* Stats row */
+    .stats-row {
+      grid-column: span 12;
+      background: var(--surface-container-high);
+      border-radius: 1.5rem;
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'Manrope', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.04em;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--on-surface-variant);
+      margin-top: 0.3rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid rgba(171,179,183,0.15);
+      padding: 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--primary); text-decoration: none; }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--on-surface-variant); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-copy { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--on-surface-variant); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-inner { padding: 1rem 1.5rem; }
+      .projects-section { padding: 2rem 1.5rem 4rem; }
+      .project-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .card-php, .card-sm { grid-column: span 1; }
+      .stats-row { grid-column: span 1; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">KorouShine</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="pages/linear.html">Linear Switches</a></li>
+      <li><a href="pages/tactile.html">Tactile Switches</a></li>
+      <li><a href="pages/clicky.html">Clicky Switches</a></li>
+      <li><a href="pages/php.html">PHP Lab</a></li>
+      <li><a href="pages/example.html" class="active">Keyboards</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <li></li><a href="pages/contact.html" class="btn-contact">Contact</a></li>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="landing-hero">
+  <p class="landing-eyebrow">VAC &nbsp;·&nbsp; Web Development Project</p>
+  <h1 class="landing-title">
+    VAC : Web<br><span class="accent">Development Project</span>
+  </h1>
+  <p class="landing-subtitle">
+    Made by : <strong>Korounganba Thokchom</strong>
+  </p>
+  <div class="landing-cta">
+    <a href="pages/php.html" class="btn-lg btn-filled">
+      PHP Project
+      <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+    </a>
+    <a href="pages/linear.html" class="btn-lg btn-outlined">
+      Explore Switches
+    </a>
+  </div>
+</section>
+
+<!-- Project cards -->
+<section class="projects-section">
+  <p class="section-label">Lab Projects</p>
+  <div class="project-grid">
+
+    <!-- PHP featured card -->
+    <a href="pages/php.html" class="card card-php">
+      <div>
+        <p class="card-php-eyebrow">PHP Project · Made by Korounganba Thokchom</p>
+        <h2 class="card-php-title">PHP<br>Programs</h2>
+      </div>
+      <div>
+        <p class="card-php-desc"><br>An exploration of architectural minimalism and digital precision. Foundational PHP syntax patterns, curated for the modern backend developer.</p>
+        <div class="card-php-arrow" style="margin-top:1.5rem">
+          Launch Lab
+          <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Linear small card -->
+    <a href="pages/linear.html" class="card card-sm card-linear">
+      <div>
+        <span class="material-symbols-outlined card-sm-icon">speed</span>
+        <h3 class="card-sm-title">Linear Switches</h3>
+        <p class="card-sm-desc">Pure, smooth travel. No bump, no click. Optimized for speed and precision.</p>
+      </div>
+      <div class="card-sm-link">
+        Explore
+        <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
+      </div>
+    </a>
+
+    <!-- Tactile small card -->
+    <a href="pages/tactile.html" class="card card-sm card-tactile">
+      <div>
+        <span class="material-symbols-outlined card-sm-icon">touch_app</span>
+        <h3 class="card-sm-title">Tactile Switches</h3>
+        <p class="card-sm-desc">Defined by the bump. Physical feedback at the exact moment of actuation.</p>
+      </div>
+      <div class="card-sm-link">
+        Explore
+        <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
+      </div>
+    </a>
+
+    <!-- Clicky small card -->
+    <a href="pages/clicky.html" class="card card-sm card-clicky">
+      <div>
+        <span class="material-symbols-outlined card-sm-icon" style="color:var(--on-primary-container)">volume_up</span>
+        <h3 class="card-sm-title" style="color:var(--on-primary-container)">Clicky Switches</h3>
+        <p class="card-sm-desc" style="color:var(--on-primary-container);opacity:0.8">Mechanical mastery. Acoustic feedback. The ultimate typing signature.</p>
+      </div>
+      <div class="card-sm-link" style="color:var(--on-primary-container)">
+        Explore
+        <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
+      </div>
+    </a>
+  </div>
+</section>
+</body>
+</html>

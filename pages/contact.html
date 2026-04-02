@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — KorouShine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4c616c;
+      --on-primary: #ffffff;
+      --primary-container: #cfe6f2;
+      --on-primary-container: #1e2f38;
+      --surface: #f8f9fa;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f1f3f5;
+      --surface-container: #e9ecef;
+      --surface-container-high: #dee2e6;
+      --on-surface: #1e2f38;
+      --on-surface-variant: #5c6f7a;
+      --outline-variant: #cbd5e1;
+      --background: #ffffff;
+      --on-background: #1e2f38;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--on-background);
+      line-height: 1.5;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(171, 179, 183, 0.2);
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .nav-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .nav-links a.active, .nav-links a:hover {
+      color: var(--primary);
+    }
+    .btn-contact {
+      background: var(--primary);
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: white;
+      transition: all 0.2s;
+    }
+    .btn-contact:hover {
+      background: #3a5b66;
+      transform: translateY(-2px);
+    }
+
+    .app-shell {
+      display: block;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .main-canvas {
+      width: 100%;
+      padding: 2rem 0 4rem 0;
+    }
+
+    footer {
+      border-top: 1px solid rgba(171, 179, 183, 0.2);
+      background: var(--surface-container-low);
+      margin-top: 3rem;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-decoration: none;
+      color: var(--primary);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .footer-links a {
+      text-decoration: none;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+
+    @media (max-width: 800px) {
+      .nav-inner { flex-direction: column; align-items: flex-start; }
+      .nav-links { flex-wrap: wrap; gap: 1rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .app-shell { padding: 0 1.25rem; }
+    }
+  </style>
+  <style>
+    /* Contact page specific styles */
+    .page-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--on-surface);
+      margin-bottom: 0.5rem;
+    }
+    .page-desc {
+      font-size: 1rem;
+      color: var(--on-surface-variant);
+      line-height: 1.6;
+      max-width: 48ch;
+      margin-bottom: 3rem;
+    }
+
+    /* Creator Card */
+    .creator-card {
+      background: var(--surface-container-lowest);
+      border-radius: 2rem;
+      border: 1px solid rgba(171, 179, 183, 0.12);
+      overflow: hidden;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 8px 24px rgba(76, 97, 108, 0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .creator-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 32px rgba(76, 97, 108, 0.12);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #3a5b66 100%);
+      padding: 2rem;
+      text-align: center;
+      color: white;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem auto;
+      backdrop-filter: blur(4px);
+    }
+    .avatar span {
+      font-size: 2.5rem;
+    }
+    .card-header h2 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .card-header .role {
+      font-size: 0.8rem;
+      opacity: 0.85;
+      letter-spacing: 0.05em;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(171, 179, 183, 0.1);
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--surface-container-low);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+    .info-icon span {
+      font-size: 1.25rem;
+    }
+    .info-content {
+      flex: 1;
+    }
+    .info-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+      margin-bottom: 0.2rem;
+    }
+    .info-value {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--on-surface);
+    }
+
+    /* Decorative elements */
+    .signature-line {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(171, 179, 183, 0.15);
+    }
+    .signature {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.85rem;
+      color: var(--on-surface-variant);
+    }
+    .signature strong {
+      color: var(--primary);
+    }
+
+    @media (max-width: 600px) {
+      .card-body { padding: 1.5rem; }
+      .info-row { gap: 0.75rem; }
+      .info-icon { width: 36px; height: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="glass-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">Korounganba Thokchom</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="linear.html">Linear Switches</a></li>
+      <li><a href="tactile.html">Tactile Switches</a></li>
+      <li><a href="clicky.html">Clicky Switches</a></li>
+      <li><a href="php.html">PHP Lab</a></li>
+      <li><a href="example.html" class="active">Keyboards</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <a href="contact.html" class="btn-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <div class="main-canvas">
+    <h1 class="page-title">Creator Details</h1>
+    <div class="creator-card">
+      <div class="card-header">
+        <div class="avatar">
+          <span class="material-symbols-outlined">developer_mode</span>
+        </div>
+        <h2>Korounganba Thokchom</h2>
+        <p class="role">Web Developer & Designer</p>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <div class="info-icon">
+            <span class="material-symbols-outlined">badge</span>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Creator Name</div>
+            <div class="info-value">Korounganba Thokchom</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">
+            <span class="material-symbols-outlined">school</span>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Semester</div>
+            <div class="info-value">4th Semester</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">
+            <span class="material-symbols-outlined">group</span>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Section</div>
+            <div class="info-value">BCA - A</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">
+            <span class="material-symbols-outlined">numbers</span>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Roll No.</div>
+            <div class="info-value">BC - 2229</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

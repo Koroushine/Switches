@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PHP Lab — SwitchLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4c616c;
+      --on-primary: #ffffff;
+      --primary-container: #cfe6f2;
+      --on-primary-container: #1e2f38;
+      --surface: #f8f9fa;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f1f3f5;
+      --surface-container: #e9ecef;
+      --surface-container-high: #dee2e6;
+      --on-surface: #1e2f38;
+      --on-surface-variant: #5c6f7a;
+      --outline-variant: #cbd5e1;
+      --background: #ffffff;
+      --on-background: #1e2f38;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--on-background);
+      line-height: 1.5;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(171, 179, 183, 0.2);
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .nav-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .nav-links a.active, .nav-links a:hover {
+      color: var(--primary);
+    }
+    .btn-contact {
+      background: transparent;
+      border: 1px solid var(--outline-variant);
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--on-surface);
+      transition: all 0.2s;
+    }
+    .btn-contact:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .app-shell {
+      display: block;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .main-canvas {
+      width: 100%;
+      padding: 2rem 0 4rem 0;
+    }
+
+    footer {
+      border-top: 1px solid rgba(171, 179, 183, 0.2);
+      background: var(--surface-container-low);
+      margin-top: 3rem;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-decoration: none;
+      color: var(--primary);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .footer-links a {
+      text-decoration: none;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+
+    @media (max-width: 800px) {
+      .nav-inner { flex-direction: column; align-items: flex-start; }
+      .nav-links { flex-wrap: wrap; gap: 1rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .app-shell { padding: 0 1.25rem; }
+    }
+  </style>
+  <style>
+    .page-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--on-surface);
+      margin-bottom: 1rem;
+    }
+    .page-desc {
+      font-size: 1.1rem;
+      color: var(--on-surface-variant);
+      line-height: 1.7;
+      max-width: 56ch;
+      margin-bottom: 2rem;
+    }
+
+    /* Professional Characteristics Section - Card Grid Layout */
+    .characteristics {
+      margin-bottom: 4rem;
+    }
+    .section-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+    }
+    .section-subtitle {
+      color: var(--on-surface-variant);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 48rem;
+      margin-bottom: 2rem;
+    }
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .char-card {
+      background: var(--surface-container-lowest);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(171, 179, 183, 0.12);
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .char-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(76, 97, 108, 0.2);
+      box-shadow: 0 12px 24px rgba(76, 97, 108, 0.08);
+    }
+    .char-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--surface-container-low);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      color: var(--primary);
+    }
+    .char-icon span {
+      font-size: 1.35rem;
+    }
+    .char-name {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--on-surface);
+      margin-bottom: 0.5rem;
+    }
+    .char-desc {
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+    }
+
+    /* Questions grid */
+    .questions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .question-card {
+      background: var(--surface-container-lowest);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(171,179,183,0.12);
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+    .question-card:hover {
+      box-shadow: 0 8px 24px rgba(76,97,108,0.08);
+    }
+    .question-header {
+      padding: 1.5rem;
+      background: var(--surface-container-low);
+      border-bottom: 1px solid rgba(171,179,183,0.1);
+    }
+    .question-title {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .question-text {
+      font-size: 0.95rem;
+      color: var(--on-surface);
+      line-height: 1.6;
+    }
+    .show-btn {
+      margin-top: 1rem;
+      background: transparent;
+      border: 1px solid var(--outline-variant);
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .show-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    .answer-code {
+      display: none;
+      padding: 1.5rem;
+      background: #1e2730;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #d4e0e8;
+      overflow-x: auto;
+      border-top: 1px solid rgba(171,179,183,0.1);
+    }
+    .answer-code.show {
+      display: block;
+    }
+    .code-subsection {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .code-subsection:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .subsection-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #98c379;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1000px) {
+      .char-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    }
+    @media (max-width: 600px) {
+      .char-grid { grid-template-columns: 1fr; }
+      .section-title { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="glass-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">KorouShine</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="linear.html">Linear Switches</a></li>
+      <li><a href="tactile.html">Tactile Switches</a></li>
+      <li><a href="clicky.html">Clicky Switches</a></li>
+      <li><a href="php.html" class="active">PHP Lab</a></li>
+      <li><a href="example.html" class="active">Keyboards</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <li></li><a href="../pages/contact.html" class="btn-contact">Contact</a></li>
+    </div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <div class="main-canvas">
+    <h1 class="page-title">PHP Programs</h1>
+    <p class="page-desc">A curated collection of essential PHP programs. Click the button below each question to view the code solution.</p>
+
+    <!-- Professional Characteristics Section -->
+    <div class="characteristics">
+      <div class="section-badge">PHP Fundamentals</div>
+      <h2 class="section-title">Characteristics of PHP</h2>
+      <p class="section-subtitle">PHP (Hypertext Preprocessor) is a popular scripting language used mainly for web development. It has specific characteristics that enable the creation of dynamic websites.</p>
+      
+      <div class="char-grid">
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">lock_open</span></div>
+          <div class="char-name">Open Source</div>
+          <div class="char-desc">Free to use, anyone can download and modify it.</div>
+        </div>
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">storage</span></div>
+          <div class="char-name">Database Support</div>
+          <div class="char-desc">Connects to databases like MySQL seamlessly.</div>
+        </div>
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">computer</span></div>
+          <div class="char-name">Server-Side Language</div>
+          <div class="char-desc">Runs on the server, not in the user's browser.</div>
+        </div>
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">school</span></div>
+          <div class="char-name">Easy to Learn</div>
+          <div class="char-desc">Simple syntax, beginner-friendly.</div>
+        </div>
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">code</span></div>
+          <div class="char-name">Works with HTML</div>
+          <div class="char-desc">Can be easily embedded inside HTML.</div>
+        </div>
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">bolt</span></div>
+          <div class="char-name">Fast Execution</div>
+          <div class="char-desc">Scripts run quickly on web servers.</div>
+        </div>
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">devices</span></div>
+          <div class="char-name">Platform Independent</div>
+          <div class="char-desc">Works on Windows, Linux, and macOS.</div>
+        </div>
+        <div class="char-card">
+          <div class="char-icon"><span class="material-symbols-outlined">groups</span></div>
+          <div class="char-name">Large Community</div>
+          <div class="char-desc">Lots of tutorials, tools, and support available.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="questions-grid">
+
+      <!-- Program 1: PHP Form Handling -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">📝 Program 1: PHP Form Handling (POST & GET Methods)</div>
+          <div class="question-text">Create a basic HTML form that collects user information using POST method. Also demonstrate GET method with another form.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<div class="code-subsection">
+<div class="subsection-title">// Using POST Method - User Information Form</div>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Simple PHP Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;User Information Form (POST)&lt;/h2&gt;
+    &lt;form method="post" action=""&gt;
+        Name: &lt;input type="text" name="name" required&gt;&lt;br&gt;&lt;br&gt;
+        Email: &lt;input type="email" name="email" required&gt;&lt;br&gt;&lt;br&gt;
+        &lt;input type="submit" name="submit" value="Submit"&gt;
+    &lt;/form&gt;
+    &lt;?php
+    if(isset($_POST['submit'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        echo "&lt;h3&gt;Form Submitted Successfully!&lt;/h3&gt;";
+        echo "Name: " . $name . "&lt;br&gt;";
+        echo "Email: " . $email;
+    }
+    ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+<div class="code-subsection">
+<div class="subsection-title">// Using GET Method - Student Information Form</div>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Student Form (GET)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Student Information Form&lt;/h2&gt;
+    &lt;form method="get"&gt;
+        Student Name: &lt;input type="text" name="student"&gt;&lt;br&gt;&lt;br&gt;
+        Age: &lt;input type="number" name="age"&gt;&lt;br&gt;&lt;br&gt;
+        &lt;input type="submit" name="submit" value="Submit"&gt;
+    &lt;/form&gt;
+    &lt;?php
+    if(isset($_GET['submit'])) {
+        $student = $_GET['student'];
+        $age = $_GET['age'];
+        echo "Student Name: " . $student . "&lt;br&gt;";
+        echo "Age: " . $age;
+    }
+    ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+<div class="code-subsection">
+<div class="subsection-title">// Using GET Method - City & Country Form</div>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;GET Form Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;GET Method Form&lt;/h2&gt;
+    &lt;form method="get"&gt;
+        City: &lt;input type="text" name="city"&gt;&lt;br&gt;&lt;br&gt;
+        Country: &lt;input type="text" name="country"&gt;&lt;br&gt;&lt;br&gt;
+        &lt;input type="submit" value="Submit"&gt;
+    &lt;/form&gt;
+    &lt;?php
+    if(isset($_GET['city']) && isset($_GET['country'])) {
+        $city = $_GET['city'];
+        $country = $_GET['country'];
+        echo "City: " . $city . "&lt;br&gt;";
+        echo "Country: " . $country;
+    }
+    ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+        </div>
+      </div>
+
+      <!-- Program 2: Factorial -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">🔢 Program 2: Factorial of a Number</div>
+          <div class="question-text">Write a PHP program to find the factorial of a given number.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Factorial Program&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Factorial of a Number&lt;/h2&gt;
+    &lt;form method="post"&gt;
+        Enter a Number: &lt;input type="number" name="num"&gt;&lt;br&gt;&lt;br&gt;
+        &lt;input type="submit" name="submit" value="Find Factorial"&gt;
+    &lt;/form&gt;
+    &lt;?php
+    if(isset($_POST['submit'])) {
+        $num = $_POST['num'];
+        $fact = 1;
+        for($i = 1; $i &lt;= $num; $i++) {
+            $fact = $fact * $i;
+        }
+        echo "Factorial of " . $num . " is " . $fact;
+    }
+    ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 3: Vowel Checker -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">🔊 Program 3: Vowel Checker (using Switch Case)</div>
+          <div class="question-text">Write a PHP program to check whether a character entered is a vowel or not using switch case.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Vowel Checker&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Check Vowel or Not&lt;/h2&gt;
+    &lt;form method="post"&gt;
+        Enter a Character: &lt;input type="text" name="char" maxlength="1"&gt;&lt;br&gt;&lt;br&gt;
+        &lt;input type="submit" name="submit" value="Check"&gt;
+    &lt;/form&gt;
+    &lt;?php
+    if(isset($_POST['submit'])) {
+        $char = strtolower($_POST['char']);
+        switch($char) {
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+                echo "The entered character is a vowel.";
+                break;
+            default:
+                echo "The entered character is not a vowel.";
+        }
+    }
+    ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 4: Sort Array -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">📊 Program 4: Sort an Array</div>
+          <div class="question-text">Write a PHP program to sort an array (5, 2, 9, 1, 7) in ascending order.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;?php
+$array = array(5, 2, 9, 1, 7);
+sort($array);
+echo "Sorted Array: &lt;br&gt;";
+foreach($array as $value) {
+    echo $value . " ";
+}
+?&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 5: Pattern -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">🎨 Program 5: Pattern Printing</div>
+          <div class="question-text">Write a program to print the following pattern:<br>
+0<br>
+1 0<br>
+0 1 0<br>
+1 0 1 0<br>
+0 1 0 1 0</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;?php
+for($i = 1; $i &lt;= 5; $i++) {
+    if($i % 2 == 1)
+        $num = 0;
+    else
+        $num = 1;
+    for($j = 1; $j &lt;= $i; $j++) {
+        echo $num . " ";
+        $num = ($num == 0) ? 1 : 0;
+    }
+    echo "&lt;br&gt;";
+}
+?&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 6: Transpose -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">📐 Program 6: Transpose of a Matrix</div>
+          <div class="question-text">Write a program to find the transpose of a 2x3 matrix.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;?php
+$matrix = array(
+    array(1, 2, 3),
+    array(4, 5, 6)
+);
+echo "Original Matrix:&lt;br&gt;";
+for($i = 0; $i &lt; 2; $i++) {
+    for($j = 0; $j &lt; 3; $j++) {
+        echo $matrix[$i][$j] . " ";
+    }
+    echo "&lt;br&gt;";
+}
+echo "&lt;br&gt;Transpose Matrix:&lt;br&gt;";
+for($i = 0; $i &lt; 3; $i++) {
+    for($j = 0; $j &lt; 2; $j++) {
+        echo $matrix[$j][$i] . " ";
+    }
+    echo "&lt;br&gt;";
+}
+?&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 7: Palindrome -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">🔄 Program 7: Palindrome Check</div>
+          <div class="question-text">Write a program to check whether a word (e.g., "madam") is a palindrome or not.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;?php
+$word = "madam";
+$reverse = strrev($word);
+if($word == $reverse) {
+    echo "The word is a Palindrome.";
+} else {
+    echo "The word is not a Palindrome.";
+}
+?&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 8: Sum of Array -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">➕ Program 8: Sum of Array Elements</div>
+          <div class="question-text">Write a PHP program to find the sum of elements in an array (2, 4, 6, 8, 10).</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;?php
+$array = array(2, 4, 6, 8, 10);
+$sum = 0;
+foreach($array as $value) {
+    $sum = $sum + $value;
+}
+echo "Sum of elements = " . $sum;
+?&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 9: Even or Odd -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">🔢 Program 9: Even or Odd Number</div>
+          <div class="question-text">Write a PHP program to check whether a number is even or odd.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;?php
+$num = 7;
+if($num % 2 == 0) {
+    echo "The number is Even";
+} else {
+    echo "The number is Odd";
+}
+?&gt;
+</pre>
+        </div>
+      </div>
+
+      <!-- Program 10: Fibonacci -->
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-title">📈 Program 10: Fibonacci Series</div>
+          <div class="question-text">Write a PHP program to print the Fibonacci series up to 10 numbers.</div>
+          <button class="show-btn" onclick="toggleCode(this)">📂 Show Code</button>
+        </div>
+        <div class="answer-code">
+<pre>
+&lt;?php
+$n = 10;
+$a = 0;
+$b = 1;
+echo $a . " " . $b . " ";
+for($i = 2; $i &lt; $n; $i++) {
+    $c = $a + $b;
+    echo $c . " ";
+    $a = $b;
+    $b = $c;
+}
+?&gt;
+</pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script>
+  function toggleCode(btn) {
+    const card = btn.closest('.question-card');
+    const answerDiv = card.querySelector('.answer-code');
+    answerDiv.classList.toggle('show');
+    if (answerDiv.classList.contains('show')) {
+      btn.innerHTML = '📂 Hide Code';
+    } else {
+      btn.innerHTML = '📂 Show Code';
+    }
+  }
+</script>
+</body>
+</html>

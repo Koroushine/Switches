@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clicky Switches — SwitchLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    /* ---------- GLOBAL RESET & DESIGN SYSTEM (standalone) ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4c616c;
+      --on-primary: #ffffff;
+      --primary-container: #cfe6f2;
+      --on-primary-container: #1e2f38;
+      --surface: #f8f9fa;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f1f3f5;
+      --surface-container: #e9ecef;
+      --surface-container-high: #dee2e6;
+      --on-surface: #1e2f38;
+      --on-surface-variant: #5c6f7a;
+      --outline-variant: #cbd5e1;
+      --background: #ffffff;
+      --on-background: #1e2f38;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--on-background);
+      line-height: 1.5;
+    }
+
+    /* Glass navigation */
+    .glass-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(171, 179, 183, 0.2);
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .nav-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .nav-links a.active, .nav-links a:hover {
+      color: var(--primary);
+    }
+    .btn-contact {
+      background: transparent;
+      border: 1px solid var(--outline-variant);
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--on-surface);
+      transition: all 0.2s;
+    }
+    .btn-contact:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    .btn-primary, .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #3a5b66;
+      transform: translateY(-2px);
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface-variant);
+    }
+    .btn-ghost:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* main layout (no sidebar) */
+    .app-shell {
+      display: block;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .main-canvas {
+      width: 100%;
+      padding: 2rem 0 4rem 0;
+    }
+
+    /* footer */
+    footer {
+      border-top: 1px solid rgba(171, 179, 183, 0.2);
+      background: var(--surface-container-low);
+      margin-top: 3rem;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-decoration: none;
+      color: var(--primary);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .footer-links a {
+      text-decoration: none;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+
+    @media (max-width: 800px) {
+      .nav-inner { flex-direction: column; align-items: flex-start; }
+      .nav-links { flex-wrap: wrap; gap: 1rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .app-shell { padding: 0 1.25rem; }
+    }
+  </style>
+  <style>
+    /* page-specific styles for clicky.html */
+    .hero-full {
+      position: relative;
+      height: 28rem;
+      border-radius: 2.5rem;
+      overflow: hidden;
+      margin-bottom: 5rem;
+      display: flex;
+      align-items: flex-end;
+    }
+    .hero-full img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-full-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(248,249,250,0.95) 40%, rgba(248,249,250,0.3) 100%);
+    }
+    .hero-full-content {
+      position: relative;
+      z-index: 2;
+      padding: 3rem;
+    }
+    .eyebrow {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--on-surface-variant);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+    .hero-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--on-surface);
+      margin-bottom: 1.25rem;
+    }
+    .hero-p { font-size: 0.95rem; color: var(--on-surface-variant); line-height: 1.6; max-width: 44ch; margin-bottom: 1.75rem; }
+    .content-row {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 3rem;
+      margin-bottom: 5rem;
+      align-items: start;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--outline-variant);
+    }
+    .content-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+    .content-p { color: var(--on-surface-variant); line-height: 1.7; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .spec-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .spec-row { display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; }
+    .spec-name { color: var(--on-surface-variant); width: 8rem; flex-shrink: 0; }
+    .spec-track { flex: 1; height: 4px; background: var(--surface-container-high); border-radius: 2px; overflow: hidden; }
+    .spec-fill { height: 100%; background: var(--primary); border-radius: 2px; }
+    .spec-val { font-weight: 600; color: var(--on-surface); width: 3.5rem; text-align: right; flex-shrink: 0; font-size: 0.8rem; }
+    .switch-img-card {
+      background: var(--surface-container-lowest);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid rgba(171,179,183,0.12);
+    }
+    .switch-img-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .switch-img-caption { padding: 1.25rem; font-size: 0.8rem; color: var(--on-surface-variant); font-style: italic; }
+    .sound-card {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      margin-bottom: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .sound-card::after {
+      content: '';
+      position: absolute;
+      right: -3rem;
+      top: -3rem;
+      width: 15rem;
+      height: 15rem;
+      background: rgba(207,230,242,0.1);
+      border-radius: 50%;
+    }
+    .sound-title { font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .sound-p { font-size: 0.9rem; opacity: 0.75; line-height: 1.6; max-width: 50ch; margin-bottom: 2rem; }
+    .waveform {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 60px;
+      margin-bottom: 2rem;
+    }
+    .wave-bar {
+      width: 6px;
+      background: rgba(207,230,242,0.5);
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .listen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.15);
+      color: var(--on-primary);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .listen-btn:hover { background: rgba(255,255,255,0.22); }
+    .spec-table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .spec-table-title { font-family: 'Manrope', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--on-surface); }
+    .spec-table-link { font-size: 0.8rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.3rem; text-decoration: none; }
+    .table-row {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(171,179,183,0.15);
+    }
+    .table-row:last-child { border-bottom: none; }
+    .row-num { font-size: 0.8rem; color: var(--on-surface-variant); width: 2rem; flex-shrink: 0; }
+    .row-main { flex: 1; }
+    .row-title { font-weight: 700; font-size: 0.95rem; color: var(--on-surface); }
+    .row-sub { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--on-surface-variant); margin-top: 0.2rem; }
+    .row-val { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1rem; color: var(--primary); }
+    .compat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .compat-card {
+      background: var(--surface-container-lowest);
+      border: 1px solid rgba(171,179,183,0.12);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      transition: transform 0.3s;
+    }
+    .compat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(76,97,108,0.08); }
+    .compat-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .compat-desc { font-size: 0.85rem; color: var(--on-surface-variant); line-height: 1.6; }
+    .keycap-chips { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .keycap {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .k1 { background: var(--surface-container); color: var(--primary); }
+    .k2 { background: var(--primary); color: var(--on-primary); }
+    .k3 { background: var(--surface-container-high); color: var(--on-surface-variant); }
+    @media (max-width: 720px) {
+      .content-row { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-full { height: 22rem; }
+      .hero-full-content { padding: 1.5rem; }
+      .compat-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav class="glass-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">KorouShine</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="linear.html">Linear Switches</a></li>
+      <li><a href="tactile.html">Tactile Switches</a></li>
+      <li><a href="clicky.html" class="active">Clicky Switches</a></li>
+      <li><a href="php.html">PHP Lab</a></li>
+      <li><a href="example.html" class="active">Keyboards</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <li></li><a href="../pages/contact.html" class="btn-contact">Contact</a></li>
+    </div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <div class="main-canvas">
+    <!-- Hero -->
+    <section class="hero-full">
+      <img src="https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=1200&q=80" alt="Clicky switch"/>
+      <div class="hero-full-overlay"></div>
+      <div class="hero-full-content">
+        <p class="eyebrow">Mechanical Mastery</p>
+        <h1 class="hero-title">Clicky<br>Switches.</h1>
+        <p class="hero-p">The ultimate feedback mechanism. Explore the intricate acoustic signature and distinct tactile bump of high-performance click-jacket and click-bar switches.</p>
+        <div style="display:flex;gap:1rem">
+          <a href="#specs" class="btn-primary">Start Exploration</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content row -->
+    <section class="content-row">
+      <div>
+        <p class="section-label">Tactile Precision</p>
+        <h2 class="content-title">How Clicky Switches Work</h2>
+        <p class="content-p">Unlike linear counterparts, clicky switches provide a definitive physical resistance followed by a drop, signaling exactly when the key registers.</p>
+        <p class="content-p">The click mechanism—either a sliding click jacket or a spring-metal click bar—produces both the tactile bump and the audible "click" simultaneously at the actuation point.</p>
+        <div class="spec-bar" id="specs">
+          <div class="spec-row">
+            <span class="spec-name">Actuation</span>
+            <div class="spec-track"><div class="spec-fill" style="width:65%"></div></div>
+            <span class="spec-val">65g</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-name">Pre-travel</span>
+            <div class="spec-track"><div class="spec-fill" style="width:45%"></div></div>
+            <span class="spec-val">1.8mm</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-name">Total Travel</span>
+            <div class="spec-track"><div class="spec-fill" style="width:100%"></div></div>
+            <span class="spec-val">4.0mm</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="switch-img-card">
+          <img src="https://imgs.search.brave.com/QAWi1H_JgQk08j_lAFvtdGnHUfQfTKHrOFH88oDlR9I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuZGlnaXRlY2dh/bGF4dXMuY2gvaW0v/RmlsZXMvNi8zLzIv/Ni8wLzYvMC82L0dJ/Rl9NWFJHQl9CbHVl/LmdpZj9pbXBvbGlj/eT1yZXNpemUmcmVz/aXplV2lkdGg9NDMw.gif"/>
+          <p class="switch-img-caption">Clicky switch mechanism</p>
+        </div>
+      </div>
+    </section>
+    <!-- Spec table -->
+    <section>
+      <div class="spec-table-header">
+        <div>
+          <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--on-surface-variant);margin-bottom:0.4rem">The Lab Specs</div>
+          <div class="spec-table-title">Technical Breakdown of the Clicky Series</div>
+        </div>
+        <a href="#" class="spec-table-link">Full Catalog <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span></a>
+      </div>
+      <div class="table-row">
+        <span class="row-num">01</span>
+        <div class="row-main">
+          <div class="row-title">Total Travel</div>
+          <div class="row-sub">Standard MX Spec</div>
+        </div>
+        <span class="row-val">4.0mm</span>
+      </div>
+      <div class="table-row">
+        <span class="row-num">02</span>
+        <div class="row-main">
+          <div class="row-title">Peak Force</div>
+          <div class="row-sub">Tactile Bump Threshold</div>
+        </div>
+        <span class="row-val">60gf ± 15gf</span>
+      </div>
+      <div class="table-row">
+        <span class="row-num">03</span>
+        <div class="row-main">
+          <div class="row-title">Leaf Spring</div>
+          <div class="row-sub">Contact Material</div>
+        </div>
+        <span class="row-val">Phosphor Bronze</span>
+      </div>
+    </section>
+
+    <!-- Stem compat -->
+    <section style="margin-top:4rem">
+      <h3 style="font-family:Manrope;font-weight:700;font-size:1.3rem;color:var(--on-surface);letter-spacing:-0.02em;margin-bottom:1.5rem">Durability &amp; Compatibility</h3>
+      <div class="compat-row">
+        <div class="compat-card">
+          <span class="material-symbols-outlined" style="color:var(--primary);margin-bottom:0.75rem">verified_user</span>
+          <h4 class="compat-title">Durability</h4>
+          <p class="compat-desc">Rated for 80 million keystrokes with gold-plated contact points for oxidation resistance.</p>
+        </div>
+        <div class="compat-card">
+          <span class="material-symbols-outlined" style="color:var(--primary);margin-bottom:0.75rem">extension</span>
+          <h4 class="compat-title">Stem Compatibility</h4>
+          <p class="compat-desc">Standardized MX-style stems ensure compatibility with 99% of modern keycap sets and artisans.</p>
+          <div class="keycap-chips">
+            <div class="keycap k1">OEM</div>
+            <div class="keycap k2">SA</div>
+            <div class="keycap k3">XDA</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+  const wf = document.getElementById('waveform');
+  if(wf) {
+    const heights = [15,22,38,55,70,62,45,55,68,72,58,42,30,42,58,65,72,60,45,35,50,65,70,55,40,30,22,18,14,12];
+    heights.forEach(h => {
+      const bar = document.createElement('div');
+      bar.className = 'wave-bar';
+      bar.style.height = h + 'px';
+      wf.appendChild(bar);
+    });
+  }
+</script>
+</body>
+</html>
