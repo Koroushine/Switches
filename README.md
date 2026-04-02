@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Project Overview
+## Project Overview
 
 The project is designed with a "Digital Gallery" aesthetic, focusing on minimalism and high-quality UI/UX. It serves two primary purposes:
 1.  **Educational Showcase**: An interactive guide to the three main types of mechanical switches (Linear, Tactile, and Clicky).
@@ -12,7 +12,7 @@ The project is designed with a "Digital Gallery" aesthetic, focusing on minimali
 
 ---
 
-## 📂 File Structure
+## File Structure
 
 ```text
 D:.
@@ -37,27 +37,27 @@ D:.
 
 ---
 
-## ✨ Features
+## Features
 
-### ⌨️ Keyboard Switch Guides
+### Keyboard Switch Guides
 * **Linear Switches**: Focuses on speed and precision with a "pure vertical motion" profile.
 * **Tactile Switches**: Details the "anatomy of the bump" and physical feedback mechanisms.
 * **Clicky Switches**: Explores the "acoustic signature" and mechanical mastery of click-jacket designs.
 
-### 🐘 PHP Lab
+### PHP Lab
 A curated collection of PHP programs including:
 * **Logic & Math**: Factorial calculation, Fibonacci series, and Even/Odd checking.
 * **Input Handling**: Demonstrations of `GET` and `POST` methods for form data.
 * **Patterns**: Algorithm-based pattern printing (e.g., binary patterns).
 
-### 🎨 Design & UI
+### Design & UI
 * **Modern Stack**: Built with HTML5, CSS3 (using CSS Variables for themes), and Vanilla JavaScript.
 * **Responsive Design**: Fully optimized for mobile, tablet, and desktop views.
 * **Aesthetic UI**: Features glassmorphism navigation, bento-grid layouts, and smooth fade-up animations.
 
 ---
 
-## 🛠️ Installation & Usage
+## Installation & Usage
 
    **Run Locally**:
     * For the **HTML/CSS** sections: Open `index.html` in any modern web browser.
